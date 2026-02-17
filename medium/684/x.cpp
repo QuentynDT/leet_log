@@ -4,19 +4,31 @@ class Solution {
 public:
     struct DSU {
         vector<int> parent;
+        vector<int> rank;
+
         DSU(int n) {
             parent.resize(n + 1);
+            rank.resize(n + 1, 0);
             iota(parent.begin(), parent.end(), 0);
         }
+
         int find(int i) {
             if (parent[i] == i) return i;
             return parent[i] = find(parent[i]);
         }
+
         bool unite(int i, int j) {
             int ri = find(i);
             int rj = find(j);
             if (ri != rj) {
-                parent[ri] = rj;
+                if (rank[ri] < rank[rj]) {
+                    parent[ri] = rj;
+                } else if (rank[ri] > rank[rj]) {
+                    parent[rj] = ri;
+                } else {
+                    parent[ri] = rj;
+                    rank[rj]++;
+                }
                 return true;
             }
             return false;
