@@ -6,17 +6,21 @@ public:
         const int n = s.size();
         if(n < k) return false;
         const int window = (1 << k) - 1;
-        unordered_set<int> seen;
+        vector<bool> seen(window + 1, false);
         int roll = 0;
         for(int i = 0; i < k; i++){
-            roll = 2 * roll + (s[i] == '1');
+            roll = (roll << 1) | (s[i] == '1');
         }
-        seen.insert(roll);
+        seen[roll] = true;
+        int count = 1;
         for(int i = k; i < n; i++){
             roll = ((roll << 1) & window) | (s[i] == '1');
-            seen.insert(roll);
+            if(!seen[roll]){
+                seen[roll] = true;
+                count++;
+            }
         }
-        return (seen.size() == window + 1);
+        return (count == window + 1);
     }
 };
 
