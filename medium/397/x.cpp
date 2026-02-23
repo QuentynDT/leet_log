@@ -20,6 +20,11 @@ public:
         return ans + x - 1;
     }
 };
+//
+//32 + 3
+//35 -> 34 33 32 16 8 4 2 1
+//35 -> 36 18 9 8 4 2 1
+//32 + 9
 
 struct token {
     int n;
@@ -50,7 +55,7 @@ int main(){
     tokens[0] = {8, 3};
     tokens[1] = {7, 4};
     tokens[2] = {4, 2};
-    tokens[3] = {INT_MAX, 32};
+    tokens[3] = {10000, 32};
     auto start = high_resolution_clock::now();
     runTests(tokens);
     auto end = high_resolution_clock::now();
