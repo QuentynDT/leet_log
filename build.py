@@ -51,7 +51,7 @@ def build_code():
     struct = ""
     inline = ""
     var = ""
-    inits = "\n    const int n = " + cases + ";\n    vector<token> tokens(n);"
+    inits = "\n    const int n = " + cases + ";\n    vector<token> tokens;"
     for var, vname in zip(itypes, inames):
         struct += "\n    " + var
         if var.endswith('&'):
@@ -59,7 +59,7 @@ def build_code():
         struct += " " + vname + ";"
         inline += "data." + vname + ", "
     for i in range(t):
-        inits += "\n    tokens[" + str(i) +"] = {};"
+        inits += "\n    tokens.push_back({});"
     struct += "\n    " + words[0] + " ans;\n    " + words[0] + " res;\n"
     inline = inline[:-2]
     solve = """s.""" + words[1] + """(""" + inline + """);"""
