@@ -15,7 +15,7 @@ def build_code():
     count = 0
     number = input("Enter number.\n")
     difficulty = input("Enter difficulty.\n")
-    cases = input("Enter number of test cases.\n")
+    cases = "1"
     print("Enter leetcode starter function.")
     while True:
         count += 1
