@@ -16,7 +16,7 @@ public:
             for(int& x : it->second){
                 ans++;
                 target -= it->first;
-                if(target < 0) return ans;
+                if(target <= 0) return ans;
             }
         }
         throw;
