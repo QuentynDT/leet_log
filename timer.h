@@ -28,7 +28,7 @@ TreeNode* buildTree(vector<int> data) {
                 current->left = new TreeNode(left_val);
                 q.push(current->left);
             }
-            i++; 
+            i++;
         }
         if (i < data.size()) {
             int right_val = data[i];
