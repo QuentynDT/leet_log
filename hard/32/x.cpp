@@ -7,13 +7,15 @@ public:
             // dp[i] := the size of the longest valid parentheses in the substring
             // s2[1..i]
         const int n = s2.size();
-            vector<int> dp(s2.size());
+        vector<int> dp(n);
 
-            for (int i = 1; i < s2.size(); ++i)
-              if (s2[i] == ')' && s2[i - dp[i - 1] - 1] == '(')
+        for (int i = 1; i < n; i++){
+            if (s2[i] == ')' && s2[i - dp[i - 1] - 1] == '('){
                 dp[i] = dp[i - 1] + dp[i - dp[i - 1] - 2] + 2;
+            }
+        }
 
-            return ranges::max(dp);
+        return ranges::max(dp);
     }
 };
 
