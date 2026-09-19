@@ -20,6 +20,7 @@ public:
             cout << r1r2 << ' ' << cr1 << ' ' << cr2 << '\n';
             double sp = (r1r2 + cr1 + cr2 ) / 2;
             double area = sqrt(sp * (sp - r1r2) * (sp - cr1) * (sp - cr2));
+            double dist = 2 * (area / r1r2);
             cout << area << '\n';
             //this is the triangle formed by point i, point i + 1, and xCenter
             //3 side lengths are dists[i],
