@@ -1,6 +1,11 @@
+#pragma once
+
 #include <bits/stdc++.h>
-using namespace std::chrono;
+
 using namespace std;
+using namespace std::chrono;
+
+// --- LEETCODE DATA STRUCTURES ---
 
 struct TreeNode {
     int val;
@@ -11,35 +16,41 @@ struct TreeNode {
     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
 };
 
-TreeNode* buildTree(vector<int> data) {
-    if (data.empty() || data[0] == -1) {
-        return nullptr;
-    }
+inline TreeNode* buildTree(const vector<int>& data, int null_val = -1001) {
+    if (data.empty() || data[0] == null_val) return nullptr;
+
     TreeNode* root = new TreeNode(data[0]);
     queue<TreeNode*> q;
     q.push(root);
-    int i = 1;
+    size_t i = 1;
+
     while (i < data.size() && !q.empty()) {
         TreeNode* current = q.front();
         q.pop();
+
         if (i < data.size()) {
-            int left_val = data[i];
-            if (left_val != -1) {
-                current->left = new TreeNode(left_val);
+            if (data[i] != null_val) {
+                current->left = new TreeNode(data[i]);
                 q.push(current->left);
             }
             i++;
         }
         if (i < data.size()) {
-            int right_val = data[i];
-            if (right_val != -1) {
-                current->right = new TreeNode(right_val);
+            if (data[i] != null_val) {
+                current->right = new TreeNode(data[i]);
                 q.push(current->right);
             }
             i++;
         }
     }
     return root;
+}
+
+inline void freeTree(TreeNode* root) {
+    if (!root) return;
+    freeTree(root->left);
+    freeTree(root->right);
+    delete root;
 }
 
 struct ListNode {
@@ -50,7 +61,7 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
-ListNode* buildList(const vector<int>& data) {
+inline ListNode* buildList(const vector<int>& data) {
     if (data.empty()) return nullptr;
     ListNode* head = new ListNode(data[0]);
     ListNode* current = head;
@@ -60,26 +71,43 @@ ListNode* buildList(const vector<int>& data) {
     }
     return head;
 }
-void pre(TreeNode* root){
-    if(!root) return;
-    cout << root -> val << ' ';
-    pre(root -> left);
-    pre(root -> right);
 
+inline void freeList(ListNode* head) {
+    while (head) {
+        ListNode* temp = head;
+        head = head->next;
+        delete temp;
+    }
 }
-void display(TreeNode* root){
+
+// --- DISPLAY OVERLOADS ---
+
+inline void pre(TreeNode* root) {
+    if (!root) return;
+    cout << root->val << ' ';
+    pre(root->left);
+    pre(root->right);
+}
+
+inline void display(TreeNode* root) {
+    if (!root) {
+        cout << "[null]\n";
+        return;
+    }
     pre(root);
     cout << '\n';
 }
-void display(ListNode* head) {
+
+inline void display(ListNode* head) {
     ListNode* current = head;
     while (current) {
         cout << current->val << (current->next ? " -> " : "");
         current = current->next;
     }
-    cout << " [null]\n";
+    cout << " -> [null]\n";
 }
-void display(const bool x){
+
+inline void display(const bool x) {
     cout << boolalpha << x << noboolalpha << ' ';
 }
 
@@ -90,10 +118,11 @@ void display(const T& x) {
 
 template <typename T>
 void display(const vector<T>& v) {
+    cout << "[ ";
     for (const auto& x : v) {
         display(x);
     }
-    cout << '\n';
+    cout << "]";
 }
 
 template <typename T>
@@ -101,23 +130,43 @@ void display(const vector<vector<T>>& m) {
     cout << '\n';
     for (const auto& v : m) {
         display(v);
+        cout << '\n';
     }
 }
 
-int dig(long long x){
-    if (!x) {
-        return 1;
-    }
-    return floor(log10(x)) + 1;
+// --- TIMER & FORMATTING ---
+
+inline int dig(long long x) {
+    if (x <= 0) return 1;
+    return static_cast<int>(floor(log10(x))) + 1;
 }
-void showRunTime(high_resolution_clock::time_point& start, high_resolution_clock::time_point& end){
+
+inline void showRunTime(const high_resolution_clock::time_point& start,
+                        const high_resolution_clock::time_point& end) {
     auto t = end - start;
     auto t_ms = duration_cast<milliseconds>(t).count();
-    auto t_μs = duration_cast<microseconds>(t).count();
+    auto t_us = duration_cast<microseconds>(t).count();
     auto t_ns = duration_cast<nanoseconds>(t).count();
-    const int x = 15 + dig(t_ms) + dig(t_μs) + dig(t_ns);
-    string space(x, '-');
+
+    int width = 15 + dig(t_ms) + dig(t_us) + dig(t_ns);
+    string space(width, '-');
+
     cout << space << '\n';
-    cout << t_ms << " ms | " << t_μs << " μs | " << t_ns << " ns" << '\n';
+    cout << t_ms << " ms | " << t_us << " us | " << t_ns << " ns\n";
     cout << space << '\n';
 }
+
+struct CleanDoubleFacet : num_put<char> {
+protected:
+    iter_type do_put(iter_type out, ios_base& str, char fill, double val) const override {
+        char buf[64];
+        int len = snprintf(buf, sizeof(buf), "%.4f", val);
+        if (char* dot = strchr(buf, '.')) {
+            char* end = buf + len - 1;
+            while (*end == '0') --end;
+            if (*end == '.') --end;
+            len = static_cast<int>(end - buf + 1);
+        }
+        return copy_n(buf, len, out);
+    }
+};
