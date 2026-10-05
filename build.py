@@ -74,16 +74,16 @@ def clean_type_for_struct(type_str: str) -> str:
     return clean
 
 def build_code():
-    number_input = input("Problem number:").strip()
+    number_input = input("Problem number: ").strip()
 
     # Step 1: Immediately check if x.cpp exists in easy, medium, or hard
     check_existing_file(number_input)
 
     # Step 2: Ask for difficulty only if it doesn't exist
-    difficulty = input("Difficulty:").strip().lower()
+    difficulty = input("Difficulty: ").strip().lower()
     target_path = os.path.join(difficulty, number_input, "x.cpp")
 
-    print("LeetCode starter function:")
+    print("LeetCode starter function: ")
     lines = []
     while True:
         line = input()
@@ -145,7 +145,7 @@ void runTests(vector<token>& tokens) {{
 int main() {{
     cout.imbue(locale(cout.getloc(), new CleanDoubleFacet));
     vector<token> tokens;
-
+    tokens.push_back({{}});
     auto start = high_resolution_clock::now();
     runTests(tokens);
     auto end = high_resolution_clock::now();

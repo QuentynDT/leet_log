@@ -118,11 +118,11 @@ void display(const T& x) {
 
 template <typename T>
 void display(const vector<T>& v) {
-    cout << "[ ";
+    cout << "( ";
     for (const auto& x : v) {
         display(x);
     }
-    cout << "]";
+    cout << ")";
 }
 
 template <typename T>
